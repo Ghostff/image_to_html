@@ -52,26 +52,26 @@ class find_img{
 	//---------args	
 		//'all' return all that have atleast one or more matches
 		//'1' return 1 image with highest match
-		//'2' retrun 2 images with more match
+		//'2' retrun 2 images with more match and more
 	public static function matches($img, $path_to_find, $return)
 	{
 		$image_match = array();
 		$img = self::get_total_pixels($img);
+		$i = 0;
 		foreach (glob($path_to_find."/*.png") as $_new_image) {
 			$new_image = self::get_total_pixels($_new_image);
 			$image_matched = self::arr_diff($img['pixel'], $new_image['pixel'], $img['size'], $_new_image, $return);
-			//return only only one match of image
 			if($return == 1 && $image_matched[0] == 0){
+				//return only only one match of image
 				$image_match = $image_matched;
 				break;
 			}
-			//return all matches of image
 			else if($return == 'all'){
+				//return all matches of image
 				$image_match[] = $image_matched;
 			}
-			//return any specified number of image matches
 			else if(is_numeric($return)){
-				$i = 0;
+				//return any specified number of image matches
 				$image_match[] = $image_matched;
 				if($i == $return)
 					break;
