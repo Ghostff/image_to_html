@@ -21,6 +21,9 @@ class find_img{
 				$new_size--;
 			}
 		}
+		//if image has no match return
+		if($new_size == 0)
+			return;
 		return array($new_size-$size, $name);
 	}
 	//get the color in each pixel of a specified image
@@ -59,7 +62,7 @@ class find_img{
 			$image_match[] = self::arr_diff($img['pixel'], $new_image['pixel'], $img['size'], $_new_image);
 		}
 		arsort($image_match);
-		return ($image_match);
+		return array_filter($image_match);
 		//return $image_match;
 	}
 }
