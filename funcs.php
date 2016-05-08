@@ -59,7 +59,9 @@ class find_img{
 		$img = self::get_total_pixels($img);
 		foreach (glob($path_to_find."/*.png") as $_new_image) {
 			$new_image = self::get_total_pixels($_new_image);
-			$image_match[] = self::arr_diff($img['pixel'], $new_image['pixel'], $img['size'], $_new_image);
+			$image_match = self::arr_diff($img['pixel'], $new_image['pixel'], $img['size'], $_new_image, $return);
+			if($return == 1 && $image_match[0] == 0)
+				break;
 		}
 		arsort($image_match);
 		return array_filter($image_match);
