@@ -72,7 +72,7 @@ class find_img{
 			}
 			else if(is_numeric($return)){
 				//return any specified number of image matches
-				$image_match[] = $image_matched;
+				$image_match[] = $image_matched[1];
 				if($i == $return)
 					break;
 				$i++;
