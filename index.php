@@ -1,6 +1,7 @@
 <?php
 require_once('funcs.php');
 
-//var_dump(matches($img, 'find', 1));
-var_dump(find_img::matches('file.png', 'find', 1));
+foreach(find_img::matches('file.png', 'find', 1) as $key => $image_matches){
+	echo array_pop($image_matches).'<br>';	
+}
 ?>
