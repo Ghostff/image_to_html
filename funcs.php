@@ -5,7 +5,7 @@ class find_img{
 	//@param 3: row of pixel
 	private static function image_color($image_name, $x, $y, $type)
 	{
-		//get image format
+		//get image type
 		$format = strstr($image_name, '.');
 		if($format == '.png')
 			$image = imagecreatefrompng($image_name);

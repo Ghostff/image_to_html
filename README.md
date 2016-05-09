@@ -13,7 +13,7 @@ else if (int)[2-9] or (string)['all'] it returns an (array) value of matches
 */
 
 #1 match (lesser time) returns 1 image that matched
-    echo find_img::matches('iamge.png', 'find', 1);
+    echo find_img::matches('image.png', 'find', 1);
     
 #2 match (2x slower) returns 2 image that matched
     var_dump( find_img::matches('image.png', 'find', 2));
