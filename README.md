@@ -38,7 +38,7 @@ var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder'
 var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'all')));
 
 
------INDEX.PRO
+#-----INDEX.PRO---------
 require_once('funcs.php');
 var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'all')));
 ```
