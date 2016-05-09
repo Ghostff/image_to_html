@@ -5,7 +5,14 @@ class find_img{
 	//@param 3: row of pixel
 	private static function image_color($image_name, $x, $y, $type)
 	{
-		$image = imagecreatefrompng($image_name);
+		//get image format
+		$format = strstr($image_name, '.');
+		if($format == '.png')
+			$image = imagecreatefrompng($image_name);
+		else if($format == '.jpeg' || $format == '.jpg')
+			$image = imagecreatefromjpeg($image_name);
+		else if($format == '.gif')
+			$image = imagecreatefromgif($image_name);
 		$rgba  = imagecolorat($image, $x, $y);
 		$colors = imagecolorsforindex($image, $rgba);
 		array_pop($colors);
