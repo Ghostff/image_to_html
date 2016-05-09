@@ -1,5 +1,6 @@
 <style>i{background:rgba(23,168,40,0.5);border:1px solid #17A828;color:#147e21;border-radius:3px;padding:0 5px;}</style>
 <?php
+//Note: acceptable image type: 'png, jpeg and gif'
 if(isset($_POST['submit'])){
 	require_once('funcs.php');
 	foreach(find_img::matches($_FILES['selected']['name'], array('find', 'all')) as $image_matches){

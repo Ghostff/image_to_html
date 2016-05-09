@@ -7,14 +7,18 @@ class find_img{
 	{
 		//get image type
 		$format = strstr($image_name, '.');
+		//create new image
 		if($format == '.png')
 			$image = imagecreatefrompng($image_name);
 		else if($format == '.jpeg' || $format == '.jpg')
 			$image = imagecreatefromjpeg($image_name);
 		else if($format == '.gif')
 			$image = imagecreatefromgif($image_name);
+		//get index of color in pixels
 		$rgba  = imagecolorat($image, $x, $y);
+		//get color for index
 		$colors = imagecolorsforindex($image, $rgba);
+		//remove alpha from array(red, green, blue, alpha)
 		array_pop($colors);
 		return ($type != 'all')? implode(',', $colors) : $colors;
 	}
@@ -22,6 +26,7 @@ class find_img{
 	private static function cal_perc($decrease, $original)
 	{
 		$percentage = $decrease / $original * 100;
+		//convers precentage to a whole number (eg: 10.3783 to 10)
 		return round($percentage, 0).'%';
 	}
 	//get diffrents in multiple arrays
@@ -30,6 +35,7 @@ class find_img{
 		$new_array = array();
 		$new_size = $size;
 		for($i = 0; $i < $size; $i++){
+			//check if string value of specified image pixel is same with current match image
 			if(implode(',', $array1[$i]) != implode(',', $array2[$i])){
 				$new_size--;
 			}
@@ -39,7 +45,7 @@ class find_img{
 			return;
 		return array(self::cal_perc($new_size, $size), $name);
 	}
-	//get the color in each pixel of a specified image
+	//get the color in each pixel and size of a specified image
 	//@param 1 image name
 	private static function get_total_pixels($img)
 	{
@@ -83,12 +89,14 @@ class find_img{
 				//if '68%' function return all image with 68% match
 	public static function matches($img, $pat_nd_fmt, $return = null)
 	{
+		//NOTE: setting return to 1 or '100%' is same
 		$image_match = array();
 		$img = self::get_total_pixels($img);
 		$i = 0;
 		//check match type
 		$pat_nd_fmt[1] = ($pat_nd_fmt[1] == 'all')? glob($pat_nd_fmt[0]."/*.{png,jpg,jpeg,gif}", GLOB_BRACE) : glob($pat_nd_fmt[0]."/*.png");
 		foreach ($pat_nd_fmt[1] as $_new_image) {
+			
 			$new_image = self::get_total_pixels($_new_image);
 			$image_matched = self::arr_diff($img['pixel'], $new_image['pixel'], $img['size'], $_new_image, $return);
 			if($return == 1 && $image_matched[0] == '100%'){

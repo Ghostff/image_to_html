@@ -13,7 +13,7 @@ var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder'
 
 	================== ACCEPTABLE VALUES ========================
 	@1param 'image.(png, jpeg or gif)'
-	@2param array('image_folder', 'all, png, jpeg or gif')
+	@2param array('images folder', 'all, png, jpeg or gif')
 	@3param (any number, '100%(will return all that is 100% matched)', null or empty)
  
 */
