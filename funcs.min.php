@@ -46,9 +46,7 @@ class img_to_htm
 		$img_color 	= $image_data['pixel'];
 		$img_height = $image_data['H'];
 		$img_width 	= $image_data['W'];
-		$img_size  	= $img_height * $img_width;
-		$HTML = $parent = $child = '';
-		
+
 		$parent = '<div id="dHksl">';
 		$child	= '<span style="';
 		$HTML = '<style>#dHksl{width:'.$img_width*$width.'px;height:'.$img_height*$height.'px;}#dHksl span{width:'.$width.'px;height:'.$height.'px;float:left;}</style>';
