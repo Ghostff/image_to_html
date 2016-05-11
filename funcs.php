@@ -89,6 +89,8 @@ class find_img{
 				//if '68%' function return all image with 68% match
 	public static function matches($img, $pat_nd_fmt, $return = null)
 	{
+		//prevent process from timing out
+		set_time_limit(0);
 		//NOTE: setting return to 1 or '100%' is same
 		$image_match = array();
 		$img = self::get_total_pixels($img);
