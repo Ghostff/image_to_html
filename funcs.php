@@ -34,8 +34,7 @@ class img_to_htm
 		for($i = 0; $i < $height; $i++)
 			for($k = 0; $k < $width; $k++)
 				$new_image[] = self::image_color($img, $k, $i);
-		//note the set of 'H' and 'W'
-		return array('pixel' => $new_image, 'H' => $width, 'W' => $height);
+		return array('pixel' => $new_image, 'W' => $width, 'H' => $height);
 	}
 	//make image and span have a corresponding with and height
 	private static function align($image_data, $holder, $child, $width = null, $height = null)
@@ -50,7 +49,6 @@ class img_to_htm
 		$img_size  	= $img_height * $img_width;
 		$HTML = $parent = $children = $parent_tag = $children_tag = $parent_sty = $children_sty = '';
 		
-		var_dump($img_height, $img_width, $img_size);
 		//generate a holder with specified attributes
 		foreach($holder as $key => $attr){
 			$parent_tag = $key;//get container html tag name
@@ -60,7 +58,7 @@ class img_to_htm
 					$parent_sty = $value;
 				else
 					$parent .= $attribute.'="'.$value.'" ';
-			$parent .= 'style="width:'.$img_size*$width/(10).'px;height:'.$img_size*$height/(10).'px;'.$parent_sty.'">';
+			$parent .= 'style="width:'.$img_width*$width.'px;height:'.$img_height*$height.'px;'.$parent_sty.'">';
 		}
 		//generate a holder with specified attributes
 		foreach($child as $key => $attr){
@@ -71,14 +69,14 @@ class img_to_htm
 					$children_sty = $value;
 				else
 					$children .= $attribute.'="'.$value.'" ';
-			$children .= 'style="width:'.$img_width*$width/(10).'px;height:'.$img_height*$height/(10).'px;float:left; text-align:center;';
+			$children .= 'style="width:'.$width.'px;height:'.$height.'px;float:left;';
 		}
 		$HTML = $parent;
 		foreach($img_color as $key => $pxl_color)
 			$HTML .= $children.'background:rgba('.$pxl_color.',1.0);'.$children_sty.'"></'.$children_tag.'>';
 		return($HTML);
 	}
-	public static function render($img_name, $htm, $width, $height, $type)
+	public static function render($img_name, $htm, $width = null, $height = null, $type = null)
 	{
 		//debuger remove this line (if image is always specified)
 		if(!file_exists($img_name))
