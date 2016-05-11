@@ -25,7 +25,7 @@ class img_to_htm
 	}
 	//get the color in each pixel and size of a specified image
 	//@param 1 image name
-	private static function get_total_pixels($img)
+	private static function ttl_pxls($img)
 	{
 		$m = $new_image = array();
 		//assign width and height image getimagesize to to $width and $heeight
@@ -38,19 +38,19 @@ class img_to_htm
 		return array('pixel' => $new_image, 'H' => $width, 'W' => $height);
 	}
 	//make image and span have a corresponding with and height
-	private static function align($image_data, $holder, $child, $width = null, $height = null, $opacity = null)
+	private static function align($image_data, $holder, $child, $width = null, $height = null)
 	{
 		//set default property for height, width and oppcaity(when arg is null)
 		if(!$width) $width = 1;
 		if(!$height) $height = 1;
-		if(!$opacity) $opacity = 1;
+		
 		$img_color 	= $image_data['pixel'];
 		$img_height = $image_data['H'];
 		$img_width 	= $image_data['W'];
 		$img_size  	= $img_height * $img_width;
+		$HTML = $parent = $children = $parent_tag = $children_tag = $parent_sty = $children_sty = '';
 		
 		var_dump($img_height, $img_width, $img_size);
-		$HTML = $parent = $children = $parent_tag = $children_tag = $parent_sty = $children_sty = '';
 		//generate a holder with specified attributes
 		foreach($holder as $key => $attr){
 			$parent_tag = $key;//get container html tag name
@@ -60,7 +60,7 @@ class img_to_htm
 					$parent_sty = $value;
 				else
 					$parent .= $attribute.'="'.$value.'" ';
-			$parent .= 'style="width:'.$img_size*$width.'px;height:'.$img_size*$height.'px;'.$parent_sty.'">';
+			$parent .= 'style="width:'.$img_size*$width/(10).'px;height:'.$img_size*$height/(10).'px;'.$parent_sty.'">';
 		}
 		//generate a holder with specified attributes
 		foreach($child as $key => $attr){
@@ -71,31 +71,25 @@ class img_to_htm
 					$children_sty = $value;
 				else
 					$children .= $attribute.'="'.$value.'" ';
-			$children .= 'style="width:'.$img_width*$width.'px;height:'.$img_height*$height.'px;float:left; text-align:center;';
+			$children .= 'style="width:'.$img_width*$width/(10).'px;height:'.$img_height*$height/(10).'px;float:left; text-align:center;';
 		}
 		$HTML = $parent;
-		foreach($img_color as $key => $pxl_color){
-			//var_dump($pxl_color);
-			$HTML .= $children.'background:rgba('.$pxl_color.','.$opacity.');'.$children_sty.'">'.$key.'</'.$children_tag.'>';
-		}
-			
-/*		var_dump($img_height, $img_width, $img_size);	
-		var_dump($HTML);*/	
-		echo($HTML);
-		
-		//$html = ;
+		foreach($img_color as $key => $pxl_color)
+			$HTML .= $children.'background:rgba('.$pxl_color.',1.0);'.$children_sty.'"></'.$children_tag.'>';
+		return($HTML);
 	}
-	public static function v($image_name)
+	public static function render($img_name, $htm, $width, $height, $type)
 	{
+		//debuger remove this line (if image is always specified)
+		if(!file_exists($img_name))
+			return 'invalid image';
+			
 		//prevent process from timing out
 		set_time_limit(0);
-		self::align(self::get_total_pixels($image_name),
-					array('div' => array('id' => 'hid', 'class' => 'hclas')), 
-					array('span' => array('class' => 'sclas', )), 
-					40,
-					2,
-					1);
-		//var_dump(self::get_total_pixels($image_name)); 'style' => 'border:1px solid #fff;'
+		if($type == 'string')
+			return htmlspecialchars(self::align(self::ttl_pxls($img_name), $htm['parent'], $htm['child'],  $width, $height));
+		else 
+			return self::align(self::ttl_pxls($img_name), $htm['parent'], $htm['child'],  $width, $height);
 	}
 	
 }

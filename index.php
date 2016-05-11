@@ -1,14 +1,11 @@
-<style>i{background:rgba(23,168,40,0.5);border:1px solid #17A828;color:#147e21;border-radius:3px;padding:0 5px;}</style>
+
 <?php
 //Note: acceptable image type: 'png, jpeg and gif'
-if(isset($_POST['submit'])){
-	require_once('funcs.php');
-	foreach(find_img::matches($_FILES['selected']['name'], array('find', 'all')) as $image_matches){
-		echo '<code> <i>'.$image_matches[1].'</i> is <i>'.$image_matches[0].'</i> matched with uploaded image</code><p />';
-	}
-}
+require_once('funcs.php');
+$image_attribute = array('parent' => array('div' => array('id' => 'did')), 
+				         'child'  => array('span' => array('class' => 'scl'))
+						);
+
+echo img_to_htm::render('1013763_640150972771788_9133588341940027691_n.jpg', $image_attribute, null, null, 'html');
 ?>
-<form method="post" action="index.php" enctype="multipart/form-data">
-	<input type="file" name="selected">
-    <input type="submit" value="upload" name="submit">
-</form>
+
