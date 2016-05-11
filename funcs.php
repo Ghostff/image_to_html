@@ -1,9 +1,10 @@
 <?php
-class find_img{
+class img_to_htm
+{
 	//@param 1: image name
 	//@param 2: col of pixel
 	//@param 3: row of pixel
-	private static function image_color($image_name, $x, $y, $type)
+	private static function image_color($image_name, $x, $y)
 	{
 		//get image type
 		$format = strstr($image_name, '.');
@@ -20,30 +21,7 @@ class find_img{
 		$colors = imagecolorsforindex($image, $rgba);
 		//remove alpha from array(red, green, blue, alpha)
 		array_pop($colors);
-		return ($type != 'all')? implode(',', $colors) : $colors;
-	}
-	//calcuate image match percentage
-	private static function cal_perc($decrease, $original)
-	{
-		$percentage = $decrease / $original * 100;
-		//convers precentage to a whole number (eg: 10.3783 to 10)
-		return round($percentage, 0).'%';
-	}
-	//get diffrents in multiple arrays
-	private static function arr_diff($array1, $array2, $size, $name)
-	{
-		$new_array = array();
-		$new_size = $size;
-		for($i = 0; $i < $size; $i++){
-			//check if string value of specified image pixel is same with current match image
-			if(implode(',', $array1[$i]) != implode(',', $array2[$i])){
-				$new_size--;
-			}
-		}
-		//if image has no match return
-		if($new_size == 0)
-			return;
-		return array(self::cal_perc($new_size, $size), $name);
+		return implode(',', $colors);
 	}
 	//get the color in each pixel and size of a specified image
 	//@param 1 image name
@@ -55,81 +33,72 @@ class find_img{
 		//total number of pixels in image
 		for($i = 0; $i < $height; $i++)
 			for($k = 0; $k < $width; $k++)
-				$m[] = $i.$k;
-	
-		foreach($m as $n){
-			//split two char and asign them to a string
-			list($col, $row) = str_split($n);
-			$new_image[] = self::image_color($img, $row, $col, 'all');
-		}
-		return array('pixel' => $new_image, 'size' => $width * $height);
+				$new_image[] = self::image_color($img, $k, $i);
+		//note the set of 'H' and 'W'
+		return array('pixel' => $new_image, 'H' => $width, 'W' => $height);
 	}
-	//find images the matches specified images
-	//@param 1 (string) image protoype name
-	//@param 2 (array)	directory to search for image and they image format to search for
-	//------args
-		//1st element
-			//path/dir to search for image matches
-		//2nd element
-			//image formats to search for in path/dir specified in 1st element
-				//'jpg' searches for match in jpg or jpeg images type alone
-				//'png' searches for match in png images type alone
-				//'gif' searches for match in gif images type alone
-				//'all' searches for match in all images type (jpg, png, gif)
-	//@param 3 (int, null, string) length of matches to return 
-	//---------args	
-		//(int) ----args
-				//if 0 function return nothing
-				//if 1 function returns 1 image with highest match
-				//if 2 or more function retrun 2 or more images with matches(this is random)
-		//(null) ---args
-				//if empty or null function returns all macthes from specified dir
-		//(string)--args
-				//if '100%' function return all image with 100% match
-				//if '68%' function return all image with 68% match
-	public static function matches($img, $pat_nd_fmt, $return = null)
+	//make image and span have a corresponding with and height
+	private static function align($image_data, $holder, $child, $width = null, $height = null, $opacity = null)
+	{
+		//set default property for height, width and oppcaity(when arg is null)
+		if(!$width) $width = 1;
+		if(!$height) $height = 1;
+		if(!$opacity) $opacity = 1;
+		$img_color 	= $image_data['pixel'];
+		$img_height = $image_data['H'];
+		$img_width 	= $image_data['W'];
+		$img_size  	= $img_height * $img_width;
+		
+		var_dump($img_height, $img_width, $img_size);
+		$HTML = $parent = $children = $parent_tag = $children_tag = $parent_sty = $children_sty = '';
+		//generate a holder with specified attributes
+		foreach($holder as $key => $attr){
+			$parent_tag = $key;//get container html tag name
+			$parent = '<'.$key.' ';
+			foreach($attr as $attribute => $value)
+				if($attribute == 'style')
+					$parent_sty = $value;
+				else
+					$parent .= $attribute.'="'.$value.'" ';
+			$parent .= 'style="width:'.$img_size*$width.'px;height:'.$img_size*$height.'px;'.$parent_sty.'">';
+		}
+		//generate a holder with specified attributes
+		foreach($child as $key => $attr){
+			$children_tag = $key;//get conatainer child html tag name
+			$children = '<'.$key.' ';
+			foreach($attr as $attribute => $value)
+				if($attribute == 'style')
+					$children_sty = $value;
+				else
+					$children .= $attribute.'="'.$value.'" ';
+			$children .= 'style="width:'.$img_width*$width.'px;height:'.$img_height*$height.'px;float:left; text-align:center;';
+		}
+		$HTML = $parent;
+		foreach($img_color as $key => $pxl_color){
+			//var_dump($pxl_color);
+			$HTML .= $children.'background:rgba('.$pxl_color.','.$opacity.');'.$children_sty.'">'.$key.'</'.$children_tag.'>';
+		}
+			
+/*		var_dump($img_height, $img_width, $img_size);	
+		var_dump($HTML);*/	
+		echo($HTML);
+		
+		//$html = ;
+	}
+	public static function v($image_name)
 	{
 		//prevent process from timing out
 		set_time_limit(0);
-		//NOTE: setting return to 1 or '100%' is same
-		$image_match = array();
-		$img = self::get_total_pixels($img);
-		$i = 0;
-		//check match type
-		$pat_nd_fmt[1] = ($pat_nd_fmt[1] == 'all')? glob($pat_nd_fmt[0]."/*.{png,jpg,jpeg,gif}", GLOB_BRACE) : glob($pat_nd_fmt[0]."/*.png");
-		foreach ($pat_nd_fmt[1] as $_new_image) {
-			
-			$new_image = self::get_total_pixels($_new_image);
-			$image_matched = self::arr_diff($img['pixel'], $new_image['pixel'], $img['size'], $_new_image, $return);
-			if($return == 1 && $image_matched[0] == '100%'){
-				//return only only one match of image
-				$image_match = array($image_matched);
-				break;
-			}
-			else if($return === null){
-				//return all matches of image
-				$image_match[] = $image_matched;
-			}
-			else if(is_int($return) &&  $return != 0){
-				//return any specified number of image matches
-				$image_match[] = $image_matched;
-				if($i == $return)
-					break;
-				$i++;
-			}
-			else if(is_string($return) && $image_matched[0] == '100%'){
-				//return any specified number of image matches
-				$image_match[] = $image_matched;
-				if($i == $return)
-					break;
-				$i++;
-			}
-			else
-				die('invalid arg');
-		}
-		arsort($image_match);
-		return array_filter($image_match);
-		//return $image_match;
+		self::align(self::get_total_pixels($image_name),
+					array('div' => array('id' => 'hid', 'class' => 'hclas')), 
+					array('span' => array('class' => 'sclas', )), 
+					40,
+					2,
+					1);
+		//var_dump(self::get_total_pixels($image_name)); 'style' => 'border:1px solid #fff;'
 	}
+	
 }
+
+
 ?>
