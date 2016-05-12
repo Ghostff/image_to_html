@@ -14,7 +14,7 @@ echo img_to_htm::render('images/test.png');
 
 /*
 ******************************Note: acceptable images type: 'png, jpeg and gif'**********************************
-MINI USE
+FUNC.MIN USE
 @1param images name with path
 @2param width(leave empty or null to use default width)
 @3param height(leave empty or null to use default height)
@@ -37,7 +37,7 @@ echo img_to_htm::render('images/test.png', 4, 4, 'string');
 
 /*
 ******************************Note: acceptable images type: 'png, jpeg and gif'**********************************
-MINI USE
+FUNCS USE
 @1param images name with path
 @2param add attribute to conatiner and child element  (dont change parent and child key name*)
 --------more
