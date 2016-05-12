@@ -1,44 +1,66 @@
-# php_image_search
-searches for images that look same or almost same with a specified image
+# php_image_to_html
+ converts image to html  [PITH SITE](http://ghostff.com/oop/?Php_Image_To_Html=php)
+
 
 for one match
 ```php
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'all'), 1));
+
 /*
-//Note: acceptable image type: 'png, jpeg and gif'
---------------------BREAKDOWN--------------------
-@1param 'image to find a match'
-@2param array('folder/dir to search for images that matches @1param', 'type of image to search for')
-@3param the count of matches to return
-
-	================== ACCEPTABLE VALUES ========================
-	@1param 'image.(png, jpeg or gif)'
-	@2param array('images folder', 'all, png, jpeg or gif')
-	@3param (any number, '100%(will return all that is 100% matched)', null or empty)
- 
+OKAY DONT JUST RUN THE CODE. DELETE EVERY OTHER ECHO AND LEAVE JUST ONE DEFAULT OR WITH CUSTOM PREFRENCE
+Sample:
 */
-#find an image that is 100% matched and under a jpg format
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'jpg'), 1));
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'jpg'), '100%'));
+require_once('funcs.min.php');
+echo img_to_htm::render('images/test.png');
+die('This is showing beacuse you never read the README ☹️');//delete this after reading
 
-#find 5 image matches under a jpg format
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'jpg'), 5));
-#find 5 image matches under a png format
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'png'), 5));
-#find 5 image matches under a gif format
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'gif'), 5));
+/*
+******************************Note: acceptable images type: 'png, jpeg and gif'**********************************
+MINI USE
+@1param images name with path
+@2param width(leave empty or null to use default width)
+@3param height(leave empty or null to use default height)
+@4param return type ('string' return html character) leave null or empty to exeute returned html
+*/
+require_once('funcs.min.php');
+//return rendered images with default attribute
+echo img_to_htm::render('images/test.png');
+//return rendered images with default width multiplied by 4
+echo img_to_htm::render('images/test.png', 4);
+//return rendered images with default height multiplied by 4
+echo img_to_htm::render('images/test.png', null, 4);
+//return rendered images with default width and height multiplied by 4
+echo img_to_htm::render('images/test.png', 4, 4);
+//return rendered images (raw string) with default attribute
+echo img_to_htm::render('images/test.png', null, null. 'string');
+//return rendered images (raw string) with default width and height multiplied by 4
+echo img_to_htm::render('images/test.png', 4, 4, 'string');
 
-#find 5 matched images under any format
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'all'), 5));
 
-#find 5 images under any format and 90% matched
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'all'), '90%'));
-
-#find all matches under any image format
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'all')));
-
-
-#-----INDEX.PRO---------
+/*
+******************************Note: acceptable images type: 'png, jpeg and gif'**********************************
+MINI USE
+@1param images name with path
+@2param add attribute to conatiner and child element  (dont change parent and child key name*)
+--------more
+	change div to any html tag if you dont wonna use div as parrent holder (free to modify attribute) NOTE: more attribute more process
+	change span to any html tag if you dont wonna use span as child  (free to modify attribute) NOTE: more attribute more process
+@3param width(leave empty or null to use default width)
+@4param height(leave empty or null to use default height)
+@5param return type ('string' return html character) leave null or empty to exeute returned html
+*/
 require_once('funcs.php');
-var_dump(find_img::matches('find_img_that_look_like_me.png', array('find_folder', 'all')));
+$image_attribute = array('parent' => array('div' => array('id' => 'did', 'style' => 'border:1px solid #000;')), //container
+						 'child'  => array('span' => array('class' => 'scl', 'data-id' => 'nw_datat_id'))//child
+						);
+echo img_to_htm::render('any_image.jpg', $image_attribute);
+//return rendered images with default width multiplied by 4
+echo img_to_htm::render('images/test.png', $image_attribute, 4);
+//return rendered images with default height multiplied by 4
+echo img_to_htm::render('images/test.png', $image_attribute, null, 4);
+//return rendered images with default width and height multiplied by 4
+echo img_to_htm::render('images/test.png', $image_attribute, 4, 4);
+//return rendered images (raw string) with default attribute
+echo img_to_htm::render('images/test.png', $image_attribute, null, null. 'string');
+//return rendered images (raw string) with default width and height multiplied by 4
+echo img_to_htm::render('images/test.png', $image_attribute, 4, 4, 'string');
 ```
