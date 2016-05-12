@@ -1,6 +1,14 @@
 <?php
 
 /*
+OKAY DONT JUST RUN THE CODE. DELETE EVERY OTHER ECHO AND LEAVE JUST ONE DEFAULT OR WITH CUSTOM PREFRENCE
+Sample:
+*/
+require_once('funcs.min.php');
+echo img_to_htm::render('images/test.png');
+die('This is showing beacuse you never read the README ☹️');//delete this after reading
+
+/*
 ******************************Note: acceptable images type: 'png, jpeg and gif'**********************************
 MINI USE
 @1param images name with path
