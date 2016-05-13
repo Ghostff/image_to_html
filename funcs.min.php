@@ -15,14 +15,17 @@ class img_to_htm
 			$image = imagecreatefromjpeg($image_name);
 		else if($format == '.gif')
 			$image = imagecreatefromgif($image_name);
-			
 		//get index of color in pixels
-		$rgba  = imagecolorat($image, $x, $y);
-		//get color for index
-		$colors = imagecolorsforindex($image, $rgba);
-		//remove alpha from array(red, green, blue, alpha)
-		array_pop($colors);
-		return implode(',', $colors);
+		$rgb  = imagecolorat($image, $x, $y);
+		//get RGB (red, green, blue)
+		$r = ($rgb >> 16) & 0xFF;
+		$g = ($rgb >> 8) & 0xFF;
+		$b = $rgb & 0xFF;
+		//Convert RGB to Hex
+	    $hex = str_pad(dechex($r), 2, "0", STR_PAD_LEFT);
+	    $hex .= str_pad(dechex($g), 2, "0", STR_PAD_LEFT);
+	    $hex .= str_pad(dechex($b), 2, "0", STR_PAD_LEFT);
+		return $hex;
 	}
 	//get the color in each pixel and size of a specified image
 	//@param 1 image name
@@ -53,7 +56,7 @@ class img_to_htm
 		$HTML = '<style>#dHksl{width:'.$img_width*$width.'px;height:'.$img_height*$height.'px;}#dHksl i{width:'.$width.'px;height:'.$height.'px;float:left;}</style>';
 		$HTML .= $parent;
 		foreach($img_color as $key => $pxl_color)
-			$HTML .= $child.'background:rgba('.$pxl_color.',1.0);"></i>';
+			$HTML .= $child.'background:#'.$pxl_color.';"></i>';
 		return($HTML);
 	}
 	public static function render($img_name, $width = null, $height = null, $type = null)
@@ -71,6 +74,5 @@ class img_to_htm
 	}
 	
 }
-
 
 ?>
