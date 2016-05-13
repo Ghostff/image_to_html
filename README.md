@@ -21,23 +21,23 @@ FUNC.MIN USE
 @4param return type ('string' return html character) leave null or empty to exeute returned html
 */
 require_once('funcs.min.php');
-//return rendered images with default attribute
+//return rendered image with default attribute
 echo img_to_htm::render('images/test.png');
-//return rendered images with default width multiplied by 4
+//return rendered image with default width multiplied by 4
 echo img_to_htm::render('images/test.png', 4);
-//return rendered images with default height multiplied by 4
+//return rendered image with default height multiplied by 4
 echo img_to_htm::render('images/test.png', null, 4);
-//return rendered images with default width and height multiplied by 4
+//return rendered image with default width and height multiplied by 4
 echo img_to_htm::render('images/test.png', 4, 4);
-//return rendered images (raw string) with default attribute
+//return rendered image (raw string) with default attribute
 echo img_to_htm::render('images/test.png', null, null. 'string');
-//return rendered images (raw string) with default width and height multiplied by 4
+//return rendered image (raw string) with default width and height multiplied by 4
 echo img_to_htm::render('images/test.png', 4, 4, 'string');
 
 
 /*
 ******************************Note: acceptable images type: 'png, jpeg and gif'**********************************
-FUNCS USE
+MINI USE
 @1param images name with path
 @2param add attribute to conatiner and child element  (dont change parent and child key name*)
 --------more
@@ -46,20 +46,27 @@ FUNCS USE
 @3param width(leave empty or null to use default width)
 @4param height(leave empty or null to use default height)
 @5param return type ('string' return html character) leave null or empty to exeute returned html
+@6param color format acceptabele value 'HEX' (leave empty to use RGBA)
+@7param style type acceptabe values 'IL' or inline(write style inside tags style attribut) (leave empty to use style tag)
 */
 require_once('funcs.php');
 $image_attribute = array('parent' => array('div' => array('id' => 'did', 'style' => 'border:1px solid #000;')), //container
 						 'child'  => array('span' => array('class' => 'scl', 'data-id' => 'nw_datat_id'))//child
 						);
+//return rendered image with default attribute
 echo img_to_htm::render('any_image.jpg', $image_attribute);
-//return rendered images with default width multiplied by 4
+//return rendered image with default width multiplied by 4
 echo img_to_htm::render('images/test.png', $image_attribute, 4);
-//return rendered images with default height multiplied by 4
+//return rendered image with default height multiplied by 4
 echo img_to_htm::render('images/test.png', $image_attribute, null, 4);
-//return rendered images with default width and height multiplied by 4
+//return rendered image with default width and height multiplied by 4
 echo img_to_htm::render('images/test.png', $image_attribute, 4, 4);
-//return rendered images (raw string) with default attribute
+//return rendered image (raw string) with default attribute
 echo img_to_htm::render('images/test.png', $image_attribute, null, null. 'string');
-//return rendered images (raw string) with default width and height multiplied by 4
+//return rendered image (raw string) with default width and height multiplied by 4
 echo img_to_htm::render('images/test.png', $image_attribute, 4, 4, 'string');
+//return rendered image with default attribute and HEX format of background color(less load for browser)
+echo img_to_htm::render('images/test.png', $image_attribute, null, null, null, 'HEX');
+//return rendered image with default attribute and inline style type(more load for browser)
+echo img_to_htm::render('images/test.png', $image_attribute, null, null, null, null, 'IL');
 ```
