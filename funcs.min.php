@@ -15,6 +15,7 @@ class img_to_htm
 			$image = imagecreatefromjpeg($image_name);
 		else if($format == '.gif')
 			$image = imagecreatefromgif($image_name);
+			
 		//get index of color in pixels
 		$rgba  = imagecolorat($image, $x, $y);
 		//get color for index
@@ -48,11 +49,11 @@ class img_to_htm
 		$img_width 	= $image_data['W'];
 
 		$parent = '<div id="dHksl">';
-		$child	= '<span style="';
-		$HTML = '<style>#dHksl{width:'.$img_width*$width.'px;height:'.$img_height*$height.'px;}#dHksl span{width:'.$width.'px;height:'.$height.'px;float:left;}</style>';
+		$child	= '<i style="';
+		$HTML = '<style>#dHksl{width:'.$img_width*$width.'px;height:'.$img_height*$height.'px;}#dHksl i{width:'.$width.'px;height:'.$height.'px;float:left;}</style>';
 		$HTML .= $parent;
 		foreach($img_color as $key => $pxl_color)
-			$HTML .= $child.'background:rgba('.$pxl_color.',1.0);"></span>';
+			$HTML .= $child.'background:rgba('.$pxl_color.',1.0);"></i>';
 		return($HTML);
 	}
 	public static function render($img_name, $width = null, $height = null, $type = null)
